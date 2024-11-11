@@ -9,7 +9,7 @@ namespace Animal.Interface
 {
     public interface IAnimal
     {
-        string MakeSound(string text);
+        string MakeSound();
     }
     
     
