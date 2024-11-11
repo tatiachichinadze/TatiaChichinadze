@@ -11,17 +11,7 @@ namespace Animal.Interface
     {
         string MakeSound(string text);
     }
-    public class ConsoleAnimal : IAnimal
-    {
-
-        public void Write(string text)
-        {
-            Console.WriteLine(text);
-        }
-        public string MakeSound(string text)
-        {
-            return text;
-        }
-    }
-
+    
+    
 }
+
