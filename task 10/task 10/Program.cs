@@ -3,10 +3,10 @@ using System.Text;
 
 public class Fraction
 {
-    private int _numerator;   
-    private int _denominator; 
+    private int _numerator;
+    private int _denominator;
 
-  
+
     public Fraction(int numerator, int denominator)
     {
         if (denominator == 0)
@@ -20,23 +20,28 @@ public class Fraction
     {
         return $"{_numerator}/{_denominator}";
     }
-
     public static Fraction operator +(Fraction fraction1, Fraction fraction2)
     {
-        var denominator = LCM(fraction1._denominator, fraction2._denominator);
+        //*აქ გამოვიყენე == ოპერატორის overload, ლოგიკური შეცდომაც გავასწორე */
+        if (fraction1 == fraction2) 
+        {
+            return new Fraction(fraction1._numerator + fraction2._numerator, fraction1._denominator);
+        }
 
-        var numerator = (denominator / fraction1._denominator * fraction1._numerator) +
-                        (denominator / fraction2._denominator * fraction2._numerator);
-
-        var gcd = GCD(denominator, numerator);
-
-        return new Fraction(numerator / gcd, denominator / gcd);
+        else
+        {
+            int denominator = LCM(fraction1._denominator, fraction2._denominator);
+            int numerator = (denominator / fraction1._denominator * fraction1._numerator) +(denominator / fraction2._denominator * fraction2._numerator);
+            int gcd = GCD(numerator, denominator);
+            return new Fraction(numerator / gcd, denominator / gcd);
+        }
     }
 
     public static bool operator ==(Fraction fraction1, Fraction fraction2)
     {
-        return (fraction1._numerator == fraction2._numerator) &&
-               (fraction1._denominator == fraction2._denominator);
+        return (fraction1._numerator == fraction2._numerator && fraction1._denominator == fraction2._denominator)
+            || (fraction1._numerator / fraction1._denominator == fraction2._numerator / fraction2._denominator);
+
     }
 
     public static bool operator !=(Fraction fraction1, Fraction fraction2)
@@ -60,31 +65,15 @@ public class Fraction
         return (a * b) / GCD(a, b);
     }
 
-    public override bool Equals(object obj)
+    public class Program
     {
-        if (obj is Fraction fraction)
+        private static void Main(string[] args)
         {
-            return this == fraction;
+            var fraction1 = new Fraction(2, 5);
+            var fraction2 = new Fraction(3, 5);
+            var result = fraction1 + fraction2;
+
+            Console.WriteLine(result.ToString());
         }
-        return false;
-    }
-
-    public override int GetHashCode()
-    {
-        return _numerator.GetHashCode() ^ _denominator.GetHashCode();
     }
 }
-
-public class Program
-{
-    public static void Main()
-    {
-        var fraction1 = new Fraction(2, 8);
-        var fraction2 = new Fraction(3, 6);
-
-        var result = fraction1 + fraction2;
-
-        Console.WriteLine(result.ToString());
-    }
-}
-
